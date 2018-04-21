@@ -49,7 +49,10 @@
     ball.y += ball.dy;
   }
 
-  const score = () => false;
+  const score = () => {
+    return ball.x <= ball.r + 7 || ball.x >= canvas.width - ball.r - 7;
+  };
+
   const pause = () => false;
 
   const tick = () => {
@@ -63,5 +66,4 @@
   }
 
   tick();
-  console.log("hi");
 })()
