@@ -50,7 +50,7 @@
   }
 
   const score = () => {
-    return ball.x <= ball.r + 7 || ball.x >= canvas.width - ball.r - 7;
+    return ball.x < ball.r + 7 || ball.x > canvas.width - ball.r - 7;
   };
 
   const pause = () => false;
@@ -59,6 +59,7 @@
     draw();
     update();
     if (score()) {
+      console.log("win")
       pause();
     } else {
       requestAnimationFrame(tick);
