@@ -1,15 +1,44 @@
 (() => {
   const canvas = document.querySelector("#pong");
   const ctx = canvas.getContext("2d");
-  const ball = {x: 140, y: 100, dx: 2, dy: 2, r: 10};
+  const initialDx = 2;
+  const initialDy = 2;
+  const ball = {x: canvas.width / 2, y: canvas.height / 2, dx: initialDx, dy: initialDy, r: 10};
   const paddleHeight = 80;
   const paddleWidth = 7;
   const paddleStart = (canvas.height - paddleHeight) / 2;
   const us = {x: canvas.width - paddleWidth, y: paddleStart, color: "red"};
   const them = {x: 0, y: paddleStart, color: "green"};
+  const playerSpeed = 8;
+  const keys = {UP: 38, DOWN: 40};
 
+  let bounces = -1;
   let time = 0;
-  let lastHit = -10000;
+  let lastHit = undefined;
+  
+  let upPressed = false;
+  let downPressed = false;
+
+  const keyDownHandler = (e) => {
+    if (e.keyCode === keys.UP) {
+      upPressed = true;
+    }
+    if (e.keyCode === keys.DOWN) {
+      downPressed = true;
+    }
+  }
+
+  const keyUpHandler = (e) => {
+    if (e.keyCode === keys.UP) {
+      upPressed = false;
+    }
+    if (e.keyCode === keys.DOWN) {
+      downPressed = false;
+    }
+  }
+
+  document.addEventListener("keydown", keyDownHandler, false);
+  document.addEventListener("keyup", keyUpHandler, false);
 
   const drawPlayer = (p) => {
     ctx.beginPath();
@@ -17,7 +46,7 @@
     ctx.fillStyle = p.color;
     ctx.fill();
     ctx.closePath();
-  }
+  };
 
   const drawBall = () => {
     ctx.beginPath();
@@ -27,36 +56,64 @@
     ctx.fill();
     ctx.stroke();
     ctx.closePath();
-  }
+  };
 
   const draw = () => {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     drawBall();
     drawPlayer(us);
     drawPlayer(them);
-  }
+  };
 
   const weHit = () => {
     return ball.x > canvas.width - ball.r - paddleWidth && ball.y >= us.y && ball.y < us.y + paddleHeight;
-  }
+  };
 
   const theyHit = () => {
     return ball.x < ball.r + paddleWidth && ball.y >= them.y && ball.y < them.y + paddleHeight;
-  }
+  };
 
   const moveX = () => {
     ball.x += ball.dx;
-  }
+  };
 
   const moveY = () => {
     ball.y += ball.dy;
-  }
+  };
+
+  const speedUp = () => {
+    const sign = ball.dx < 0 ? -1 : 1;
+    ball.dx = sign * (Math.abs(ball.dx) + 1);
+  };
+
+  const changeDirection = () => {
+    ball.dx = -ball.dx;
+  };
+
+  const moveUs = () => {
+    if (upPressed && !downPressed) {
+      us.y = Math.max(0, us.y - playerSpeed);
+    }
+    if (downPressed && !upPressed) {
+      us.y = Math.min(canvas.height - paddleHeight, us.y + playerSpeed);
+    }
+  };
+
+  const moveThem = () => {
+
+  };
 
   const update = () => {
+    moveUs();
+    moveThem();
+
     if (weHit() || theyHit()) {
       lastHit = time;
-      ball.dx = -ball.dx;
+      changeDirection();
       moveX();
+      if (++bounces % 10 === 0) {
+        speedUp();
+      }
     }
 
     if (ball.y > canvas.height - ball.r || ball.y < ball.r) {
@@ -65,7 +122,7 @@
 
     moveX();
     moveY();
-  }
+  };
 
   const score = () => {
     return ball.x < ball.r || ball.x > canvas.width - ball.r;
@@ -79,11 +136,10 @@
     update();
     if (score()) {
       console.log("win")
-      pause();
-    } else {
-      requestAnimationFrame(tick);
+      return;
     }
-  }
+    requestAnimationFrame(tick);
+  };
 
   tick();
 })()
