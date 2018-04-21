@@ -26,7 +26,7 @@
     if (e.keyCode === keys.DOWN) {
       downPressed = true;
     }
-  }
+  };
 
   const keyUpHandler = (e) => {
     if (e.keyCode === keys.UP) {
@@ -35,22 +35,28 @@
     if (e.keyCode === keys.DOWN) {
       downPressed = false;
     }
-  }
+  };
 
   const touchHandler = (e) => {
     if (e.touches) {
       const touch = e.touches[0]; // no multitouch support for now
       if (touch.pageY > us.y) {
-        upPressed = true;
-      }
-      if (touch.pageY < us.y) {
         downPressed = true;
       }
+      if (touch.pageY < us.y) {
+        upPressed = true;
+      }
     }
-  }
+  };
+
+  const touchEndHandler = () => {
+    upPressed = false;
+    downPressed = false;
+  };
 
   canvas.addEventListener("touchstart", touchHandler);
   canvas.addEventListener("touchmove", touchHandler);
+  canvas.addEventListener("touchend", touchEndHandler);
   document.addEventListener("keydown", keyDownHandler);
   document.addEventListener("keyup", keyUpHandler);
 
