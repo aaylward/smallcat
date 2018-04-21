@@ -50,7 +50,7 @@
   }
 
   const score = () => {
-    return ball.x < ball.r + 7 || ball.x > canvas.width - ball.r - 7;
+    return ball.x < ball.r || ball.x > canvas.width - ball.r;
   };
 
   const pause = () => false;
