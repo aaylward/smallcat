@@ -37,11 +37,11 @@
   }
 
   const update = () => {
-    if (ball.x + ball.dx > canvas.width - ball.r || ball.x + ball.dx < ball.r) {
+    if (ball.x > canvas.width - ball.r || ball.x < ball.r) {
       ball.dx = -ball.dx;
     }
 
-    if (ball.y + ball.dy > canvas.height - ball.r || ball.y + ball.dy < ball.r) {
+    if (ball.y > canvas.height - ball.r || ball.y < ball.r) {
       ball.dy = -ball.dy;
     }
 
