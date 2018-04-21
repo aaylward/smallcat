@@ -37,8 +37,22 @@
     }
   }
 
-  document.addEventListener("keydown", keyDownHandler, false);
-  document.addEventListener("keyup", keyUpHandler, false);
+  const touchHandler = (e) => {
+    if (e.touches) {
+      const touch = e.touches[0]; // no multitouch support for now
+      if (touch.pageY > us.y) {
+        upPressed = true;
+      }
+      if (touch.pageY < us.y) {
+        downPressed = true;
+      }
+    }
+  }
+
+  canvas.addEventListener("touchstart", touchHandler);
+  canvas.addEventListener("touchmove", touchHandler);
+  document.addEventListener("keydown", keyDownHandler);
+  document.addEventListener("keyup", keyUpHandler);
 
   const drawPlayer = (p) => {
     ctx.beginPath();
