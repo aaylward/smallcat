@@ -11,6 +11,7 @@
   const them = {x: 0, y: paddleStart, color: "green"};
   const playerSpeed = 8;
   const keys = {UP: 38, DOWN: 40};
+  const modes = new Set(["single-player", "local-multi-player", "multi-player"]);
 
   let bounces = -1;
   let time = 0;
