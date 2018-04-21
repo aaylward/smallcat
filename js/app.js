@@ -2,22 +2,16 @@
   const canvas = document.querySelector("#pong");
   const ctx = canvas.getContext("2d");
   const ball = {x: 140, y: 100, dx: 2, dy: 2, r: 10};
+  const us = {x: canvas.width - 7, y: canvas.height / 2 - 30, color: "red"};
+  const them = {x: 0, y: canvas.height / 2 - 30, color: "green"};
 
-  const drawPlayer = (x, y, color) => {
+  const drawPlayer = (p) => {
     ctx.beginPath();
-    ctx.rect(x, y, 7, 60);
-    ctx.fillStyle = color;
+    ctx.rect(p.x, p.y, 7, 60);
+    ctx.fillStyle = p.color;
     ctx.fill();
     ctx.closePath();
   }
-
-  const drawUs = () => {
-    drawPlayer(0, (canvas.height / 2) - 30, "red");
-  };
-
-  const drawThem = () => {
-    drawPlayer(canvas.width - 7, (canvas.height / 2) - 30, "green");
-  };
 
   const drawBall = () => {
     ctx.beginPath();
@@ -32,8 +26,8 @@
   const draw = () => {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     drawBall();
-    drawUs();
-    drawThem();
+    drawPlayer(us);
+    drawPlayer(them);
   }
 
   const update = () => {
