@@ -122,9 +122,9 @@
 
   const moveThem = () => {
     if (ball.dx > 0) {
-      if (them.y < (canvas.height - paddleHeight) / 2) {
+      if (them.y + (paddleHeight / 2) < (canvas.height - paddleHeight) / 2) {
         them.y += 2;
-      } else if (them.y > (canvas.height - paddleHeight) / 2){
+      } else if (them.y + (paddleHeight / 2) > (canvas.height - paddleHeight) / 2){
         them.y -= 2;
       }
     } else {
@@ -136,14 +136,12 @@
     }
   };
 
-  const update = () => {
-    moveUs();
-    moveThem();
-
+  const processCollisions = () => {
     if (weHit() || theyHit()) {
       lastHit = time;
       changeDirection();
       moveX();
+
       if (++bounces % 10 === 0) {
         speedUp();
       }
@@ -152,6 +150,13 @@
     if (ball.y > canvas.height - ball.r || ball.y < ball.r) {
       ball.dy = -ball.dy;
     }
+  }
+
+  const update = () => {
+    moveUs();
+    moveThem();
+
+    processCollisions();
 
     moveX();
     moveY();
