@@ -27,7 +27,7 @@
   let bounces = -1;
   let time = 0;
   
-  let paused = false;
+  let paused = true;
   let upPressed = false;
   let downPressed = false;
 
@@ -297,5 +297,10 @@
     requestAnimationFrame(tick);
   };
 
+  drawLives();
+  drawBall();
+  drawPlayer(us);
+  drawPlayer(them);
+  ctx.fillText("Press Space (or touch) to Start!", (canvas.width / 2) - 70, canvas.height / 2 + 40);
   requestAnimationFrame(tick);
 })()
