@@ -10,13 +10,14 @@
   const us = {x: canvas.width - paddleWidth, y: paddleStart, color: "red", lives: 3};
   const them = {x: 0, y: paddleStart, color: "green", lives: 3};
   const playerSpeed = 8;
-  const keys = {UP: 38, DOWN: 40};
+  const keys = {UP: 38, DOWN: 40, SPACE: 32};
   const modes = {SINGLE_PLAYER: "single-player", MULTI_PLAYER: "multi-player", MULTI_LOCAL: "local-multi-player"}
 
   let bounces = -1;
   let time = 0;
   let lastHit = undefined;
   
+  let paused = false;
   let upPressed = false;
   let downPressed = false;
 
@@ -26,6 +27,9 @@
     }
     if (e.keyCode === keys.DOWN) {
       downPressed = true;
+    }
+    if (e.keyCode === keys.SPACE) {
+      paused = !paused;
     }
     return false;
   };
@@ -81,13 +85,6 @@
     ctx.fill();
     ctx.stroke();
     ctx.closePath();
-  };
-
-  const draw = () => {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    drawBall();
-    drawPlayer(us);
-    drawPlayer(them);
   };
 
   const weHit = () => {
@@ -180,6 +177,10 @@
   }
 
   const update = () => {
+    if (paused) {
+      return;
+    }
+
     moveUs();
     moveThem(modes.SINGLE_PLAYER);
 
@@ -189,19 +190,92 @@
   };
 
   const score = () => {
-    return ball.x < ball.r || ball.x > canvas.width - ball.r;
+    if (ball.x < ball.r) {
+      them.lives--;
+      return true;
+    }
+
+    if (ball.x > canvas.width - ball.r) {
+      us.lives--;
+      return true;
+    }
+
+    return false;
   };
 
   const pause = () => false;
 
-  const tick = () => {
-    time++;
-    if (score()) {
-      console.log("win")
+  const drawLife = (x) => {
+    const y = 20;
+    const radius = 15;
+    const smileRadius = 10;
+    ctx.beginPath();
+    ctx.arc(x, y, radius, 0, Math.PI * 2, true); // Outer circle
+    ctx.moveTo(x + radius - smileRadius, y);
+    ctx.arc(x, y, smileRadius, 0, Math.PI, false);  // Mouth (clockwise)
+    ctx.moveTo(x-5, y - 5);
+    ctx.arc(x - 5, y - 5, 4, 0, Math.PI * 2, true);  // Left eye
+    ctx.moveTo(x + 5, y - 5);
+    ctx.arc(x + 5, y - 5, 4, 0, Math.PI * 2, true);  // Right eye
+    ctx.stroke();
+  }
+
+  const drawLives = () => {
+    for (let i=0; i<them.lives; i++) {
+      drawLife(20 + 40*i);
+    }
+
+    for (let i=0; i<us.lives; i++) {
+      drawLife(canvas.width - 20 - 40*i);
+    }
+  }
+
+  const draw = () => {
+    if (paused) {
       return;
     }
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    drawLives();
+    drawBall();
+    drawPlayer(us);
+    drawPlayer(them);
+  };
+
+  const weWin = () => {
+    return them.lives === 0;
+  }
+
+  const theyWin = () => {
+    return us.lives === 0;
+  }
+
+  const resetLives = () => {
+    us.lives = 3;
+    them.lives = 3;
+  }
+
+  const tick = () => {
+    time++;
     update();
     draw();
+    if (score()) {
+      paused = true;
+      if (weWin()) {
+        ctx.fillText("You Win!!", (canvas.width / 2) - 30, canvas.height / 2);
+        ctx.fillText("Press Space to Play Again", (canvas.width / 2) - 50, canvas.height / 2 + 40);
+        resetLives();
+      } else if (theyWin()) {
+        ctx.fillText("They Win...", (canvas.width / 2) - 30, canvas.height / 2);
+        ctx.fillText("Press Space to Play Again", (canvas.width / 2) - 50, canvas.height / 2 + 40);
+        resetLives();
+      } else {
+        ctx.fillText("Press Space to Continue", (canvas.width / 2) - 50, canvas.height / 2 + 40);
+      }
+      ball.x = canvas.width / 2;
+      ball.y = canvas.height / 2;
+      ball.dx = initialDx;
+      ball.dy = initialDy;
+    }
     requestAnimationFrame(tick);
   };
 
