@@ -13,12 +13,9 @@
   const keys = {UP: 38, DOWN: 40, SPACE: 32};
   const modes = {SINGLE_PLAYER: "single-player", MULTI_PLAYER: "multi-player", MULTI_LOCAL: "local-multi-player"}
 
-
   const makeAudio = (file) => {
     const el = document.createElement("audio");
-    el.loop = false;
     el.setAttribute("src", file);
-    el.currentTime = 0;
     return el;
   }
 
