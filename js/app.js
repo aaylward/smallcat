@@ -13,6 +13,20 @@
   const keys = {UP: 38, DOWN: 40, SPACE: 32};
   const modes = {SINGLE_PLAYER: "single-player", MULTI_PLAYER: "multi-player", MULTI_LOCAL: "local-multi-player"}
 
+
+  const makeAudio = (file) => {
+    const el = document.createElement("audio");
+    el.loop = false;
+    el.setAttribute("src", file);
+    el.currentTime = 0;
+    return el;
+  }
+
+  const boo = makeAudio("boo.wav");
+  const mah = makeAudio("mah.wav");
+  const ping = makeAudio("ping.wav");
+  const woo = makeAudio("woo.wav");
+
   let bounces = -1;
   let time = 0;
   let lastHit = undefined;
@@ -157,8 +171,10 @@
 
       if (ourHit) {
         processHit(us);
+        boo.play();
       } else {
         processHit(them);
+        ping.play();
       }
 
       if (++bounces % 3 === 0) {
@@ -192,11 +208,13 @@
   const score = () => {
     if (ball.x < ball.r) {
       them.lives--;
+      woo.play();
       return true;
     }
 
     if (ball.x > canvas.width - ball.r) {
       us.lives--;
+      mah.play();
       return true;
     }
 
