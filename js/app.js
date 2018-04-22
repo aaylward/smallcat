@@ -124,7 +124,7 @@
     }
   };
 
-  const moveThem = () => {
+  const moveThem = (mode) => {
     if (ball.dx > 0) {
       if (them.y + (paddleHeight / 2) < (canvas.height - paddleHeight) / 2) {
         them.y += 2;
@@ -181,7 +181,7 @@
 
   const update = () => {
     moveUs();
-    moveThem();
+    moveThem(modes.SINGLE_PLAYER);
 
     processCollisions();
 
