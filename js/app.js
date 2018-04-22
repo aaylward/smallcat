@@ -192,12 +192,12 @@
 
   const tick = () => {
     time++;
-    draw();
-    update();
     if (score()) {
       console.log("win")
       return;
     }
+    update();
+    draw();
     requestAnimationFrame(tick);
   };
 
