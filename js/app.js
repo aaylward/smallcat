@@ -136,11 +136,37 @@
     }
   };
 
+  const processHit = (player) => {
+      if (ball.y < player.y + (paddleHeight / 3)) {
+        ball.dy = dySign * (Math.abs(ball.dy) + 2);
+      } else if (ball.y > player.y + (2 * paddle / 3)) {
+        ball.dy = dySign * (Math.abs(ball.dy) - 2);
+      }
+  }
+
+  const processHits = () => {
+    const dySign = ball.dy < 0 ? -1 : 1;
+    const ourHit = weHit();
+    if (weHit()) {
+      processHit(us);
+    } else if (theyHit()) {
+      processHit(them);
+    }
+  }
+
   const processCollisions = () => {
-    if (weHit() || theyHit()) {
+    const ourHit = weHit();
+    const theirHit = theyHit();
+    if (ourHit || theirHit) {
       lastHit = time;
       changeDirection();
       moveX();
+
+      if (ourHit) {
+        if (ball.y < us.y + (paddleHeight / 3)) {
+          
+        }
+      }
 
       if (++bounces % 10 === 0) {
         speedUp();
