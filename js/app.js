@@ -152,14 +152,18 @@
     }
   }
 
+  const moveBall = () => {
+    moveX();
+    moveY();
+  }
+
   const update = () => {
     moveUs();
     moveThem();
 
     processCollisions();
 
-    moveX();
-    moveY();
+    moveBall();
   };
 
   const score = () => {
