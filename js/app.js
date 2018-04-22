@@ -11,7 +11,7 @@
   const them = {x: 0, y: paddleStart, color: "green"};
   const playerSpeed = 8;
   const keys = {UP: 38, DOWN: 40};
-  const modes = new Set(["single-player", "local-multi-player", "multi-player"]);
+  const modes = {SINGLE_PLAYER: "single-player", MULTI_PLAYER: "multi-player", MULTI_LOCAL: "local-multi-player"}
 
   let bounces = -1;
   let time = 0;
@@ -121,10 +121,18 @@
   };
 
   const moveThem = () => {
-    if (ball.y > them.y) {
-      them.y += 2;
-    } else if (ball.y < them.y) {
-      them.y -= 2;
+    if (ball.dx > 0) {
+      if (them.y * 2 < canvas.height) {
+        them.y += 2;
+      } else {
+        them.y -= 2;
+      }
+    } else {
+      if (ball.y > them.y) {
+        them.y += 2;
+      } else if (ball.y < them.y) {
+        them.y -= 2;
+      }
     }
   };
 
