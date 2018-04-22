@@ -144,9 +144,9 @@
     const dySign = ball.dy < 0 ? -1 : 1;
 
     if (ball.y < player.y + (paddleHeight / 3)) {
-      ball.dy = dySign * (Math.abs(ball.dy) + 3);
+      ball.dy -= 2;
     } else if (ball.y > player.y + (2 * paddleHeight / 3)) {
-      ball.dy = dySign * (Math.abs(ball.dy) + 3);
+      ball.dy += 2;
     }
   }
 
