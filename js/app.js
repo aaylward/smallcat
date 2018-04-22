@@ -7,8 +7,8 @@
   const paddleHeight = 80;
   const paddleWidth = 7;
   const paddleStart = (canvas.height - paddleHeight) / 2;
-  const us = {x: canvas.width - paddleWidth, y: paddleStart, color: "red"};
-  const them = {x: 0, y: paddleStart, color: "green"};
+  const us = {x: canvas.width - paddleWidth, y: paddleStart, color: "red", lives: 3};
+  const them = {x: 0, y: paddleStart, color: "green", lives: 3};
   const playerSpeed = 8;
   const keys = {UP: 38, DOWN: 40};
   const modes = {SINGLE_PLAYER: "single-player", MULTI_PLAYER: "multi-player", MULTI_LOCAL: "local-multi-player"}
