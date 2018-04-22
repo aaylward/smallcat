@@ -98,12 +98,20 @@
     ctx.closePath();
   };
 
+  const rightHit = (ballx) => {
+    return ballx > canvas.width - ball.r - paddleWidth && ball.y >= us.y && ball.y < us.y + paddleHeight;
+  }
+
+  const leftHit = (ballx) => {
+    return ballx < ball.r + paddleWidth && ball.y >= them.y && ball.y < them.y + paddleHeight;
+  }
+
   const weHit = () => {
-    return ball.x > canvas.width - ball.r - paddleWidth && ball.y >= us.y && ball.y < us.y + paddleHeight;
+    return rightHit(ball.x) || (ball.dx > 0 && rightHit(ball.x + ball.dx));
   };
 
   const theyHit = () => {
-    return ball.x < ball.r + paddleWidth && ball.y >= them.y && ball.y < them.y + paddleHeight;
+    return leftHit(ball.x) || (ball.dx < 0 && leftHit(ball.x + ball.dx));
   };
 
   const moveX = () => {
@@ -141,7 +149,9 @@
       }
     } else {
       if (ball.y > them.y + (paddleHeight / 2)) {
-        them.y += 4;
+        if (ball.y - (them.y + (paddleHeight / 2)) > 3) {
+          them.y += 4;
+        }
       } else if (ball.y < them.y + (paddleHeight / 2)) {
         them.y -= 4;
       }
