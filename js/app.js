@@ -279,11 +279,11 @@
     if (score()) {
       paused = true;
       if (weWin()) {
-        ctx.fillText("You Win!!", (canvas.width / 2) - 30, canvas.height / 2);
+        ctx.fillText("You Win!!", (canvas.width / 2) - 15, canvas.height / 2);
         ctx.fillText("Press Space to Play Again", (canvas.width / 2) - 50, canvas.height / 2 + 40);
         resetLives();
       } else if (theyWin()) {
-        ctx.fillText("They Win...", (canvas.width / 2) - 30, canvas.height / 2);
+        ctx.fillText("They Win...", (canvas.width / 2) - 15, canvas.height / 2);
         ctx.fillText("Press Space to Play Again", (canvas.width / 2) - 50, canvas.height / 2 + 40);
         resetLives();
       } else {
