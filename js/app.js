@@ -121,7 +121,11 @@
   };
 
   const moveThem = () => {
-
+    if (ball.y > them.y) {
+      them.y++;
+    } else if (ball.y < them.y) {
+      them.y--;
+    }
   };
 
   const update = () => {
