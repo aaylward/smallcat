@@ -122,7 +122,7 @@
 
   const moveThem = () => {
     if (ball.dx > 0) {
-      if (them.y * 2 < canvas.height) {
+      if (them.y < (canvas.height - paddleHeight) / 2) {
         them.y += 2;
       } else {
         them.y -= 2;
