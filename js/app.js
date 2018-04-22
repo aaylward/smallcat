@@ -122,9 +122,9 @@
 
   const moveThem = () => {
     if (ball.y > them.y) {
-      them.y++;
+      them.y += 2;
     } else if (ball.y < them.y) {
-      them.y--;
+      them.y -= 2;
     }
   };
 
