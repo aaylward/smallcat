@@ -205,5 +205,5 @@
     requestAnimationFrame(tick);
   };
 
-  tick();
+  requestAnimationFrame(tick);
 })()
