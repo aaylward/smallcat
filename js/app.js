@@ -129,10 +129,10 @@
         them.y -= 2;
       }
     } else {
-      if (ball.y > them.y) {
-        them.y += 2;
-      } else if (ball.y < them.y) {
-        them.y -= 2;
+      if (ball.y > them.y + (paddleHeight / 2)) {
+        them.y += 4;
+      } else if (ball.y < them.y + (paddleHeight / 2)) {
+        them.y -= 4;
       }
     }
   };
@@ -161,7 +161,7 @@
         processHit(them);
       }
 
-      if (++bounces % 10 === 0) {
+      if (++bounces % 3 === 0) {
         speedUp();
       }
     }
