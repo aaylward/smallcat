@@ -27,6 +27,7 @@
     if (e.keyCode === keys.DOWN) {
       downPressed = true;
     }
+    return false;
   };
 
   const keyUpHandler = (e) => {
@@ -36,6 +37,7 @@
     if (e.keyCode === keys.DOWN) {
       downPressed = false;
     }
+    return false;
   };
 
   const touchHandler = (e) => {
@@ -48,11 +50,13 @@
         upPressed = true;
       }
     }
+    return false;
   };
 
   const touchEndHandler = () => {
     upPressed = false;
     downPressed = false;
+    return false;
   };
 
   canvas.addEventListener("touchstart", touchHandler);
@@ -140,9 +144,9 @@
     const dySign = ball.dy < 0 ? -1 : 1;
 
     if (ball.y < player.y + (paddleHeight / 3)) {
-      ball.dy = dySign * (Math.abs(ball.dy) + 2);
+      ball.dy = dySign * (Math.abs(ball.dy) + 3);
     } else if (ball.y > player.y + (2 * paddleHeight / 3)) {
-      ball.dy = dySign * (Math.abs(ball.dy) - 2);
+      ball.dy = dySign * (Math.abs(ball.dy) + 3);
     }
   }
 
