@@ -56,6 +56,10 @@
   };
 
   const touchHandler = (e) => {
+    if (paused) {
+      paused = false;
+    }
+
     if (e.touches) {
       const touch = e.touches[0]; // no multitouch support for now
       if (touch.pageY > us.y) {
