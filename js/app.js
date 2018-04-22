@@ -26,7 +26,6 @@
 
   let bounces = -1;
   let time = 0;
-  let lastHit = undefined;
   
   let paused = false;
   let upPressed = false;
@@ -102,21 +101,13 @@
     ctx.closePath();
   };
 
-  const rightHit = (ballx) => {
-    return ballx > canvas.width - ball.r - paddleWidth && ball.y >= us.y && ball.y < us.y + paddleHeight;
-  }
-
-  const leftHit = (ballx) => {
-    return ballx < ball.r + paddleWidth && ball.y >= them.y && ball.y < them.y + paddleHeight;
-  }
-
   const weHit = () => {
-    return rightHit(ball.x) || (ball.dx > 0 && rightHit(ball.x + ball.dx));
+    return ball.x + ball.r >= canvas.width - paddleWidth && ball.y >= us.y && ball.y < us.y + paddleHeight;
   };
 
   const theyHit = () => {
-    return leftHit(ball.x) || (ball.dx < 0 && leftHit(ball.x + ball.dx));
-  };
+    return ball.x - ball.r <= paddleWidth && ball.y >= them.y && ball.y < them.y + paddleHeight;
+  }
 
   const moveX = () => {
     ball.x += ball.dx;
@@ -146,9 +137,9 @@
 
   const moveThem = (mode) => {
     if (ball.dx > 0) {
-      if (them.y + (paddleHeight / 2) < (canvas.height - paddleHeight) / 2) {
+      if (them.y + (paddleHeight / 2) < canvas.height / 2) {
         them.y += 2;
-      } else if (them.y + (paddleHeight / 2) > (canvas.height - paddleHeight) / 2){
+      } else if (them.y + (paddleHeight / 2) > canvas.height / 2) {
         them.y -= 2;
       }
     } else {
@@ -176,7 +167,6 @@
     const ourHit = weHit();
     const theirHit = theyHit();
     if (ourHit || theirHit) {
-      lastHit = time;
       changeDirection();
       moveX();
 
@@ -210,10 +200,9 @@
 
     moveUs();
     moveThem(modes.SINGLE_PLAYER);
+    moveBall();
 
     processCollisions();
-
-    moveBall();
   };
 
   const score = () => {
