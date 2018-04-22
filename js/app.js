@@ -124,7 +124,7 @@
     if (ball.dx > 0) {
       if (them.y < (canvas.height - paddleHeight) / 2) {
         them.y += 2;
-      } else {
+      } else if (them.y > (canvas.height - paddleHeight) / 2){
         them.y -= 2;
       }
     } else {
